@@ -131,7 +131,7 @@ class MainFragment : Fragment(R.layout.fragment_main), AdapterView.OnItemSelecte
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, index: Int, p3: Long) {
-        viewModel.setColor(parent?.getItemAtPosition(index) as String)
+        viewModel.setColor(binding.colorsSpinner.adapter.getItem(index) as String)
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
