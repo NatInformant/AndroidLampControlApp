@@ -25,6 +25,7 @@ class MainViewModel @Inject constructor(
     private val getBrightnessLevels: GetBrightnessLevelsUseCase,
     private val setBrightnessLevel: SetBrightnessLevelUseCase
 ) : ViewModel() {
+
     init {
         getColorsList()
         getLampBrightnessLevels()

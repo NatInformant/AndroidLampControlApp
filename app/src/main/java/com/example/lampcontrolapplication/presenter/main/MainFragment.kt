@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -45,6 +44,12 @@ class MainFragment : Fragment(R.layout.fragment_main), AdapterView.OnItemSelecte
     }
 
     private fun setUpObservers() {
+        setUpLampInformationListeners()
+
+        setUpResponseStateListeners()
+    }
+
+    private fun setUpLampInformationListeners() {
         viewModel.currentLampState.observe(viewLifecycleOwner) {
             when (it) {
                 LampState.LAMP_ON -> binding.lampOnOrOffButton.text = "Выключить"
@@ -67,7 +72,9 @@ class MainFragment : Fragment(R.layout.fragment_main), AdapterView.OnItemSelecte
                 else -> {}
             }
         }
+    }
 
+    private fun setUpResponseStateListeners() {
         viewModel.setColorResponseState.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
@@ -84,6 +91,7 @@ class MainFragment : Fragment(R.layout.fragment_main), AdapterView.OnItemSelecte
                 else -> {}
             }
         }
+
         viewModel.setBrightnessLevelResponseState.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
@@ -144,9 +152,7 @@ class MainFragment : Fragment(R.layout.fragment_main), AdapterView.OnItemSelecte
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    /*val brightnessLevel =
-                        brightnessLevels.minLevel + progress * brightnessLevels.levelPrecision
-                    viewModel.setLampBrightnessLevel(brightnessLevel)*/
+
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {
