@@ -13,12 +13,12 @@ interface LampApi {
     suspend fun turnLampOff(): Boolean
 
     @POST("color/")
-    suspend fun setColor(@Query("color") colorName:String): Boolean
+    suspend fun setColor(@Query("color") colorName:String): Response<Boolean>
     @GET("color/names_only")
     suspend fun getColors(): Response<List<String>>
 
     @POST("brightness/")
-    suspend fun setBrightnessLevel(@Query("level") brightnessLevel:Int): Boolean
+    suspend fun setBrightnessLevel(@Query("level") brightnessLevel:Int): Response<Boolean>
     @GET("brightness/")
     suspend fun getBrightnessLevels(): Response<BrightnessLevels>
 }

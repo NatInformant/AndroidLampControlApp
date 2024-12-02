@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lampcontrolapplication.data.model.BrightnessLevels
+import com.example.lampcontrolapplication.data.model.LampSetParameterState
 import com.example.lampcontrolapplication.data.model.LampState
 import com.example.lampcontrolapplication.data.state.DataState
 import com.example.lampcontrolapplication.domain.useCaseInterfaces.GetBrightnessLevelsUseCase
@@ -29,33 +30,50 @@ class MainViewModel @Inject constructor(
         getLampBrightnessLevels()
     }
 
-    private var _currentLampState = MutableLiveData(LampState.LAMP_OFF)
+    private val _currentLampState = MutableLiveData(LampState.LAMP_OFF)
     val currentLampState: LiveData<LampState>
         get() = _currentLampState
 
-    private var _colors = MutableLiveData<DataState<List<String>>>(DataState.Loading)
+    private val _colors = MutableLiveData<DataState<List<String>>>(DataState.Loading)
     val colors: LiveData<DataState<List<String>>>
         get() = _colors
 
-    private var _brightnessLevels = MutableLiveData<DataState<BrightnessLevels>>(DataState.Loading)
+    private val _setColorResponseState = MutableLiveData<DataState<LampSetParameterState>>(DataState.Loading)
+    val setColorResponseState: LiveData<DataState<LampSetParameterState>>
+        get() = _setColorResponseState
+
+    private val _brightnessLevels = MutableLiveData<DataState<BrightnessLevels>>(DataState.Loading)
     val brightnessLevels: LiveData<DataState<BrightnessLevels>>
         get() = _brightnessLevels
+
+    private val _setBrightnessLevelResponseState = MutableLiveData<DataState<LampSetParameterState>>(DataState.Loading)
+    val setBrightnessLevelResponseState: LiveData<DataState<LampSetParameterState>>
+        get() = _setBrightnessLevelResponseState
 
     fun changeCurrentLampState() {
         viewModelScope.launch {
             when (_currentLampState.value) {
                 LampState.LAMP_ON -> {
                     turnLampOff()
-                    _currentLampState.postValue(LampState.LAMP_OFF)
+                    setLampStateToLampOff()
                 }
 
                 else -> {
                     turnLampOn()
-                    _currentLampState.postValue(LampState.LAMP_ON)
+                    setLampStateToLampOn()
                 }
             }
         }
     }
+
+    fun setLampStateToLampOn() {
+        _currentLampState.postValue(LampState.LAMP_ON)
+    }
+
+    fun setLampStateToLampOff() {
+        _currentLampState.postValue(LampState.LAMP_OFF)
+    }
+
 
     private fun getColorsList() {
         viewModelScope.launch {
@@ -66,7 +84,8 @@ class MainViewModel @Inject constructor(
 
     fun setColor(colorName: String) {
         viewModelScope.launch {
-            setLampColor(colorName)
+            val result =setLampColor(colorName)
+            _setColorResponseState.postValue(result)
         }
     }
 
@@ -79,7 +98,8 @@ class MainViewModel @Inject constructor(
 
     fun setLampBrightnessLevel(brightnessLevel: Int) {
         viewModelScope.launch {
-            setBrightnessLevel(brightnessLevel)
+            val result = setBrightnessLevel(brightnessLevel)
+            _setBrightnessLevelResponseState.postValue(result)
         }
     }
 }

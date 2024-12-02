@@ -2,6 +2,7 @@ package com.example.lampcontrolapplication.data.repository
 
 import com.example.lampcontrolapplication.data.api.LampApi
 import com.example.lampcontrolapplication.data.model.BrightnessLevels
+import com.example.lampcontrolapplication.data.model.LampSetParameterState
 import com.example.lampcontrolapplication.data.state.DataState
 import javax.inject.Inject
 
@@ -32,12 +33,24 @@ class LampRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun setColor(colorName: String) {
+    override suspend fun setColor(colorName: String):  DataState<LampSetParameterState> {
         kotlin.runCatching {
             lampApi.setColor(colorName)
-        }.onFailure{
+        }.fold(
+            onSuccess = {response ->
+                if (!response.isSuccessful && response.code()==400) {
+                    return DataState.Success(LampSetParameterState.FAILURE_LAMP_OFF)
+                }
+                if(!response.isSuccessful) {
+                    return DataState.Failure(response.message())
+                }
 
-        }
+                return DataState.Success(LampSetParameterState.SUCCESS)
+            },
+            onFailure = {
+                return DataState.Failure(it.message!!)
+            }
+        )
 
     }
 
@@ -57,11 +70,23 @@ class LampRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun setBrightnessLevel(brightnessLevel: Int) {
+    override suspend fun setBrightnessLevel(brightnessLevel: Int): DataState<LampSetParameterState> {
         kotlin.runCatching {
             lampApi.setBrightnessLevel(brightnessLevel)
-        }.onFailure{
+        }.fold(
+            onSuccess = { response ->
+                if (!response.isSuccessful && response.code()==400) {
+                    return DataState.Success(LampSetParameterState.FAILURE_LAMP_OFF)
+                }
+                if(!response.isSuccessful) {
+                    return DataState.Failure(response.message())
+                }
 
-        }
+                return DataState.Success(LampSetParameterState.SUCCESS)
+            },
+            onFailure = {
+                return DataState.Failure(it.message!!)
+            }
+        )
     }
 }
