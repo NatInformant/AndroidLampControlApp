@@ -36,7 +36,7 @@ class LampRepositoryImpl @Inject constructor(
         kotlin.runCatching {
             lampApi.setColor(colorName)
         }.onFailure{
-            
+
         }
 
     }
@@ -58,6 +58,10 @@ class LampRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setBrightnessLevel(brightnessLevel: Int) {
-        lampApi.setBrightnessLevel(brightnessLevel)
+        kotlin.runCatching {
+            lampApi.setBrightnessLevel(brightnessLevel)
+        }.onFailure{
+
+        }
     }
 }
