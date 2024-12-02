@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">TaskTrackerApplication</string>
+    <string name="app_name">LampControlApplication</string>
     <string name="lamp_on_button_tittle">Включить лампу</string>
 </resources>

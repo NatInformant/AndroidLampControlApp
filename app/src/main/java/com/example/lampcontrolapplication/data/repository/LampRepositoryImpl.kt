@@ -21,7 +21,7 @@ class LampRepositoryImpl @Inject constructor(
             lampApi.getColors()
         }.fold(
             onSuccess = { response ->
-                if(!response.isSuccessful) {
+                if (!response.isSuccessful) {
                     return DataState.Failure(response.message())
                 }
                 return DataState.Success(response.body()!!)
@@ -33,7 +33,12 @@ class LampRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setColor(colorName: String) {
-        lampApi.setColor(colorName)
+        kotlin.runCatching {
+            lampApi.setColor(colorName)
+        }.onFailure{
+            
+        }
+
     }
 
     override suspend fun getBrightnessLevels(): DataState<BrightnessLevels> {
@@ -41,7 +46,7 @@ class LampRepositoryImpl @Inject constructor(
             lampApi.getBrightnessLevels()
         }.fold(
             onSuccess = { response ->
-                if(!response.isSuccessful) {
+                if (!response.isSuccessful) {
                     return DataState.Failure(response.message())
                 }
                 return DataState.Success(response.body()!!)
