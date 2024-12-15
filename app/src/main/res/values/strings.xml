@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">LampControlApplication</string>
-    <string name="lamp_on_button_tittle">Включить лампу</string>
+    <string name="lamp_on_button_title">Выключить лампу</string>
+    <string name="lamp_off_button_title">Включить лампу</string>
+    <string name="lamp_off_error_message">Лампа сейчас выключена</string>
+    <string name="colors_spinner_title">Выберите цвет лампы:</string>
+    <string name="lamp_brightness_seek_bar_title">Выберите яркость лампы:</string>
 </resources>

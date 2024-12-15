@@ -52,8 +52,8 @@ class MainFragment : Fragment(R.layout.fragment_main), AdapterView.OnItemSelecte
     private fun setUpLampInformationListeners() {
         viewModel.currentLampState.observe(viewLifecycleOwner) {
             when (it) {
-                LampState.LAMP_ON -> binding.lampOnOrOffButton.text = "Выключить"
-                else -> binding.lampOnOrOffButton.text = "Включить"
+                LampState.LAMP_ON -> binding.lampOnOrOffButton.text = getString(R.string.lamp_on_button_title)
+                else -> binding.lampOnOrOffButton.text = getString(R.string.lamp_off_button_title)
             }
         }
 
@@ -95,7 +95,7 @@ class MainFragment : Fragment(R.layout.fragment_main), AdapterView.OnItemSelecte
     private fun checkLampSetParameterState(it: UiState.Success<LampSetParameterState>) {
         if (it.value == LampSetParameterState.FAILURE_LAMP_OFF) {
             viewModel.setLampStateToLampOff()
-            showErrorMessage("Лампа сейчас выключена")
+            showErrorMessage(getString(R.string.lamp_off_error_message))
             return
         }
 
